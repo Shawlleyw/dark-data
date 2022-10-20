@@ -29,13 +29,15 @@ with open(sys.argv[1]) as f:
 imgFmts = ['jpg', 'jpeg', 'png']    
     
 with open("err.log", "w") as f:
-        
     for line in tqdm(lines):
         try: 
             meta = json.loads(line)
             httpsUrl = GetHttpsUrl(meta['imUrl'])
             genre = meta['root-genre']
             imgFmt = httpsUrl.split('.')[-1]
+            if imgFmt not in  imgFmts:
+                print("won't fetch " + imgFmt, file=sys.stderr)
+                continue
             img = GetImageFromHttpsUrl(httpsUrl)
             rgbs = numpy.array(img)
             rgbs_vec = rgbs.reshape((rgbs.shape[0] * rgbs.shape[1], 3))
@@ -45,5 +47,4 @@ with open("err.log", "w") as f:
             res = clt.cluster_centers_
             print("%s:(%d,%d,%d);(%d,%d,%d)" % (genre, res[0][0], res[0][1], res[0][2], res[1][0], res[1][1], res[1][2]))
         except:
-            print("failed to fetch " + imgFmt, file=sys.stderr)
             f.write(httpsUrl+'\n')
