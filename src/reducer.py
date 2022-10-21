@@ -4,11 +4,29 @@ import sys
 from sklearn.cluster import KMeans
 import numpy as np
 import tqdm as tqdm
+import json
 
 
 def get_3dim_coords(coord_str):
     coords = coord_str.split(',')
     return [int(coords[0]), int(coords[1]), int(coords[2])]
+
+
+def vec3d_to_str(vec3):
+    return "%d;%d;%d" % (int(vec3[0]), int(vec3[1]), int(vec3[2]))
+
+
+def dump_to_json(genre, length, vec3s):
+    hues = []
+    for vec3 in vec3s:
+        hues.append(vec3d_to_str(vec3))
+
+    jsonItem = {
+        "genre": genre,
+        "size": length,
+        "hues": hues,
+    }
+    return json.dumps(jsonItem)
 
 
 type_arr = dict()
@@ -32,4 +50,4 @@ for type, list in type_arr.items():
     rgbs_vec = np.array(list)
     clt = KMeans(n_clusters=4, max_iter=100)
     clt.fit(rgbs_vec)
-    print(type, len(list), clt.cluster_centers_)
+    print(dump_to_json(type, len(list), clt.cluster_centers_))
