@@ -33,4 +33,4 @@ for type, list in type_arr.items():
     rgbs_vec = np.array(list)
     clt = KMeans(n_clusters=4, max_iter=100)
     clt.fit(rgbs_vec)
-    print(type, clt.cluster_centers_)
+    print(clt.cluster_centers_)
