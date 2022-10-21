@@ -29,8 +29,7 @@ for line in sys.stdin:
 
 
 for type, list in type_arr.items():
-    print(type, len(list))
     rgbs_vec = np.array(list)
     clt = KMeans(n_clusters=4, max_iter=100)
     clt.fit(rgbs_vec)
-    print(clt.cluster_centers_)
+    print(type, len(list), clt.cluster_centers_)
