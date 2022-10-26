@@ -21,11 +21,9 @@ def GetImageFromHttpsUrl(httpsUrl):
 
 lines = []
 
-with open(sys.argv[1]) as f:
-    
-    for line in f:
-        lines.append(line.strip())
-    
+for line in sys.stdin:
+    lines.append(line.strip())
+
 imgFmts = ['jpg', 'jpeg', 'png']    
     
 with open("err.log", "w") as f:
